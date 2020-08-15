@@ -80,9 +80,7 @@ if list(counts.values())[len(counts) - 1] == 0:
     result = random.randint(0, len(labels) - 1)
 
 else:
-    print(counts)
     rnd = random.randint(1, total)
-    print(rnd)
     curr_total = 0
     for key, value in counts.items():
         curr_total += value
