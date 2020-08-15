@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 def die():
     print('Killing process')
@@ -62,3 +63,32 @@ def read_labels(filename: str):
 
 labels = read_labels('./labels.txt')
 data = read_data('./data.txt', len(labels), True, False, False)
+
+# TODO: handle first prediction better, by taking into account what happened last time
+# anyways, for now its just gonna be whos most likely to go next
+
+counts = {}
+for key in labels.keys():
+    counts[key] = [scrum[0] for scrum in data ].count(key) 
+
+total = sum(counts.values())
+
+counts = {k: v for k, v in sorted(counts.items(), key=lambda item: item[1])}
+
+if list(counts.values())[len(counts) - 1] == 0:
+    # just predict a random person
+    result = random.randint(0, len(labels) - 1)
+
+else:
+    print(counts)
+    rnd = random.randint(1, total)
+    print(rnd)
+    curr_total = 0
+    for key, value in counts.items():
+        curr_total += value
+        if curr_total >= rnd:
+            result = key
+            break
+
+print(f'FIRST PERSON IS {labels[result]}')
+
