@@ -1,6 +1,6 @@
 import numpy as np
 import random
-
+from frequency_predictor import FrequencyPredictor
 def die():
     print('Killing process')
     exit(0)
@@ -67,26 +67,5 @@ data = read_data('./data.txt', len(labels), True, False, False)
 # TODO: handle first prediction better, by taking into account what happened last time
 # anyways, for now its just gonna be whos most likely to go next
 
-counts = {}
-for key in labels.keys():
-    counts[key] = [scrum[0] for scrum in data ].count(key) 
-
-total = sum(counts.values())
-
-counts = {k: v for k, v in sorted(counts.items(), key=lambda item: item[1])}
-
-if list(counts.values())[len(counts) - 1] == 0:
-    # just predict a random person
-    result = random.randint(0, len(labels) - 1)
-
-else:
-    rnd = random.randint(1, total)
-    curr_total = 0
-    for key, value in counts.items():
-        curr_total += value
-        if curr_total >= rnd:
-            result = key
-            break
-
-print(f'FIRST PERSON IS {labels[result]}')
-
+fp = FrequencyPredictor(labels, data)
+fp.predict()
